@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Mother's Day Amma</title>
+  <style>
+    :root {
+      --pink-50: #fff2f8;
+      --pink-100: #ffd4e8;
+      --rose: #ff6baf;
+      --hot-pink: #ff3d96;
+      --magenta: #d83dff;
+      --lavender: #a888ff;
+      --gold: #ffd36e;
+      --mint: #8ff7d2;
+      --ink: #521334;
+      --white-glow: rgba(255, 255, 255, 0.72);
+      --shadow-pink: rgba(255, 61, 150, 0.42);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+      font-family: "Segoe UI", "Poppins", Arial, sans-serif;
+      color: var(--ink);
+      background: #ffd6eb;
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .opening-screen,
+    .surprise-page {
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    .opening-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      background:
+        radial-gradient(circle at 22% 12%, rgba(255, 255, 255, 0.92), transparent 28%),
+        radial-gradient(circle at 84% 24%, rgba(255, 211, 110, 0.38), transparent 26%),
+        linear-gradient(135deg, #ffe8f3 0%, #ffc1df 43%, #eac7ff 100%);
+      transition: opacity 1s ease, visibility 1s ease;
+    }
+
+    .opening-screen.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .opening-content {
+      width: min(92vw, 620px);
+      text-align: center;
+      animation: openingFade 1.3s ease both;
+    }
+
+    .hero-photo-wrap {
+      position: relative;
+      width: min(78vw, 390px);
+      aspect-ratio: 1 / 1;
+      margin: 0 auto 28px;
+      border-radius: 32px;
+      padding: 10px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.85), rgba(255, 165, 211, 0.45));
+      box-shadow: 0 26px 80px rgba(218, 48, 139, 0.35);
+      animation: photoFloat 4.8s ease-in-out infinite;
+    }
+
+    .hero-photo-wrap::before,
+    .hero-photo-wrap::after {
+      content: "";
+      position: absolute;
+      inset: -16px;
+      border-radius: 40px;
+      background: conic-gradient(from 120deg, #ff4fa6, #ffd36e, #a888ff, #8ff7d2, #ff4fa6);
+      filter: blur(24px);
+      opacity: 0.5;
+      z-index: -1;
+      animation: haloSpin 9s linear infinite;
+    }
+
+    .hero-photo-wrap::after {
+      inset: -28px;
+      filter: blur(44px);
+      opacity: 0.36;
+      animation-direction: reverse;
+    }
+
+    .hero-photo {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border: 4px solid rgba(255, 255, 255, 0.76);
+      border-radius: 24px;
+      box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.55);
+    }
+
+    .opening-title,
+    .opening-subtitle,
+    .page-title,
+    .modal-message,
+    .final-message {
+      margin: 0;
+      letter-spacing: 0;
+      text-shadow:
+        0 0 10px rgba(255, 255, 255, 0.92),
+        0 0 22px rgba(255, 61, 150, 0.45),
+        0 0 46px rgba(216, 61, 255, 0.24);
+    }
+
+    .opening-title {
+      font-size: clamp(2.35rem, 8vw, 5.2rem);
+      line-height: 1.03;
+      color: #a80f63;
+      animation: textRise 1.2s ease 0.45s both, glowPulse 2.8s ease-in-out infinite;
+    }
+
+    .opening-subtitle {
+      margin-top: 14px;
+      font-size: clamp(1.15rem, 4.8vw, 2.1rem);
+      font-weight: 700;
+      color: #7e2ac4;
+      animation: textRise 1.2s ease 0.9s both, glowPulse 3.1s ease-in-out infinite;
+    }
+
+    .surprise-page {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 28px clamp(14px, 4vw, 48px) 40px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 12% 20%, rgba(255, 255, 255, 0.78), transparent 19%),
+        radial-gradient(circle at 83% 10%, rgba(255, 211, 110, 0.25), transparent 24%),
+        radial-gradient(circle at 70% 82%, rgba(168, 136, 255, 0.26), transparent 28%),
+        linear-gradient(140deg, #fff4fa 0%, #ffc6e3 38%, #e4c6ff 70%, #ffd8ec 100%);
+    }
+
+    .surprise-page::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(circle, rgba(255, 255, 255, 0.92) 0 2px, transparent 3px),
+        radial-gradient(circle, rgba(255, 61, 150, 0.42) 0 2px, transparent 3px);
+      background-size: 92px 92px, 138px 138px;
+      animation: particleDrift 16s linear infinite;
+      opacity: 0.7;
+    }
+
+    .topbar {
+      position: relative;
+      z-index: 3;
+      width: min(1060px, 100%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 26px;
+    }
+
+    .page-title {
+      max-width: 720px;
+      font-size: clamp(1.95rem, 5.5vw, 4.6rem);
+      line-height: 1.03;
+      color: #9c0d5a;
+    }
+
+    .music-button {
+      width: 48px;
+      height: 48px;
+      flex: 0 0 auto;
+      border: 0;
+      border-radius: 50%;
+      color: #83124d;
+      background: rgba(255, 255, 255, 0.58);
+      box-shadow: 0 12px 34px rgba(255, 61, 150, 0.23), inset 0 0 0 1px rgba(255, 255, 255, 0.56);
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+      backdrop-filter: blur(12px);
+    }
+
+    .music-button:hover,
+    .music-button:focus-visible {
+      transform: translateY(-3px) scale(1.05);
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: 0 18px 42px rgba(255, 61, 150, 0.35), 0 0 30px rgba(255, 255, 255, 0.78);
+      outline: none;
+    }
+
+    .gift-stage {
+      position: relative;
+      z-index: 2;
+      width: min(1060px, 100%);
+      min-height: 68vh;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(120px, 1fr));
+      gap: clamp(18px, 3vw, 34px);
+      align-items: center;
+      padding: clamp(12px, 3vw, 28px) 0;
+    }
+
+    .gift-button {
+      --box-a: #ff4fa6;
+      --box-b: #ffd36e;
+      --box-c: #a888ff;
+      --delay: 0s;
+      position: relative;
+      width: clamp(108px, 15vw, 158px);
+      aspect-ratio: 1 / 1;
+      justify-self: center;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+      filter: drop-shadow(0 20px 22px rgba(128, 23, 83, 0.22));
+      animation: giftFloat 4.2s ease-in-out var(--delay) infinite;
+      transition: transform 0.22s ease, filter 0.22s ease;
+    }
+
+    .gift-button:nth-child(2n) {
+      translate: 0 24px;
+    }
+
+    .gift-button:nth-child(3n) {
+      translate: 0 -18px;
+    }
+
+    .gift-button:hover,
+    .gift-button:focus-visible {
+      transform: translateY(-8px) scale(1.07);
+      filter: drop-shadow(0 26px 30px rgba(255, 61, 150, 0.35)) drop-shadow(0 0 20px var(--box-a));
+      outline: none;
+    }
+
+    .gift-button.is-opened {
+      pointer-events: none;
+      opacity: 0.72;
+    }
+
+    .gift-button.is-opening .gift-lid {
+      animation: openLid 0.72s cubic-bezier(.2, 1.2, .3, 1) both;
+    }
+
+    .gift-button.is-opening .gift-base {
+      animation: openBase 0.72s ease both;
+    }
+
+    .gift-shine {
+      position: absolute;
+      inset: 2%;
+      border-radius: 22px;
+      background: radial-gradient(circle at 30% 16%, rgba(255, 255, 255, 0.82), transparent 19%);
+      opacity: 0.86;
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    .gift-lid,
+    .gift-base {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--box-a), var(--box-b) 58%, var(--box-c));
+      box-shadow: inset -10px -12px 22px rgba(116, 0, 80, 0.16), inset 10px 10px 18px rgba(255, 255, 255, 0.3);
+    }
+
+    .gift-lid {
+      top: 18%;
+      width: 86%;
+      height: 25%;
+      border-radius: 12px 12px 8px 8px;
+      transform-origin: 20% 100%;
+      z-index: 3;
+    }
+
+    .gift-base {
+      top: 39%;
+      width: 76%;
+      height: 50%;
+      border-radius: 10px 10px 18px 18px;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .gift-lid::before,
+    .gift-base::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 18%;
+      height: 100%;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.35));
+      box-shadow: 0 0 14px rgba(255, 255, 255, 0.7);
+    }
+
+    .gift-lid::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -44%;
+      width: 56%;
+      height: 74%;
+      transform: translateX(-50%);
+      border-radius: 50% 50% 12px 12px;
+      border: 12px solid rgba(255, 255, 255, 0.78);
+      border-bottom: 0;
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.72));
+    }
+
+    .gift-spark {
+      position: absolute;
+      inset: 20% 20% auto auto;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 0 14px white, -42px 18px 0 -3px white, 35px 45px 0 -5px white;
+      opacity: 0.8;
+      z-index: 5;
+      animation: sparkleBlink 1.7s ease-in-out infinite;
+    }
+
+    .heart,
+    .particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .heart {
+      color: rgba(255, 57, 146, 0.38);
+      font-size: var(--size);
+      left: var(--left);
+      bottom: -42px;
+      animation: heartRise var(--duration) linear var(--delay) infinite;
+      text-shadow: 0 0 18px rgba(255, 255, 255, 0.8);
+    }
+
+    .particle {
+      width: var(--size);
+      height: var(--size);
+      left: var(--left);
+      top: var(--top);
+      border-radius: 50%;
+      background: var(--color);
+      box-shadow: 0 0 16px var(--color), 0 0 34px rgba(255, 255, 255, 0.42);
+      animation: particleTwinkle var(--duration) ease-in-out var(--delay) infinite;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      background: rgba(79, 0, 49, 0.34);
+      opacity: 0;
+      visibility: hidden;
+      backdrop-filter: blur(0);
+      transition: opacity 0.35s ease, visibility 0.35s ease, backdrop-filter 0.35s ease;
+    }
+
+    .modal-backdrop.is-visible {
+      opacity: 1;
+      visibility: visible;
+      backdrop-filter: blur(12px);
+    }
+
+    .modal-card {
+      position: relative;
+      width: min(92vw, 520px);
+      padding: clamp(14px, 4vw, 24px);
+      border-radius: 24px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(255, 218, 238, 0.84));
+      box-shadow: 0 30px 90px rgba(112, 0, 73, 0.36), 0 0 44px rgba(255, 255, 255, 0.7);
+      transform: translateY(20px) scale(0.86);
+      transition: transform 0.42s cubic-bezier(.2, 1.2, .2, 1);
+      overflow: hidden;
+    }
+
+    .modal-backdrop.is-visible .modal-card {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-card::before {
+      content: "";
+      position: absolute;
+      inset: -42%;
+      background: conic-gradient(from 0deg, transparent, rgba(255, 79, 166, 0.22), transparent, rgba(168, 136, 255, 0.2), transparent);
+      animation: haloSpin 8s linear infinite;
+      z-index: -1;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 50%;
+      color: #8d1557;
+      background: rgba(255, 255, 255, 0.84);
+      box-shadow: 0 8px 24px rgba(141, 21, 87, 0.2);
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+      z-index: 2;
+    }
+
+    .modal-close:hover,
+    .modal-close:focus-visible {
+      transform: rotate(10deg) scale(1.08);
+      background: white;
+      outline: none;
+    }
+
+    .modal-photo {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: 16px;
+      border: 4px solid rgba(255, 255, 255, 0.86);
+      box-shadow: 0 20px 42px rgba(160, 16, 93, 0.24);
+      background: #ffe2f0;
+    }
+
+    .modal-message {
+      margin-top: 18px;
+      font-size: clamp(1.55rem, 6vw, 2.55rem);
+      line-height: 1.08;
+      text-align: center;
+      color: #9b0e62;
+      animation: glowPulse 2.5s ease-in-out infinite;
+    }
+
+    .final-message {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      z-index: 15;
+      width: min(92vw, 620px);
+      padding: 18px 22px;
+      border-radius: 20px;
+      text-align: center;
+      font-size: clamp(1.2rem, 4.6vw, 2rem);
+      font-weight: 800;
+      color: #81104f;
+      background: rgba(255, 255, 255, 0.68);
+      box-shadow: 0 18px 54px rgba(255, 61, 150, 0.28);
+      backdrop-filter: blur(14px);
+      opacity: 0;
+      transform: translate(-50%, 24px) scale(0.92);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+      pointer-events: none;
+    }
+
+    .final-message.is-visible {
+      opacity: 1;
+      transform: translate(-50%, 0) scale(1);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @keyframes openingFade {
+      from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes textRise {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+        filter: blur(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes glowPulse {
+      0%,
+      100% {
+        filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8));
+      }
+      50% {
+        filter: drop-shadow(0 0 18px rgba(255, 61, 150, 0.55));
+      }
+    }
+
+    @keyframes photoFloat {
+      0%,
+      100% {
+        transform: translateY(0) rotate(-1deg);
+      }
+      50% {
+        transform: translateY(-12px) rotate(1deg);
+      }
+    }
+
+    @keyframes haloSpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes particleDrift {
+      to {
+        background-position: 92px -92px, -138px 138px;
+      }
+    }
+
+    @keyframes giftFloat {
+      0%,
+      100% {
+        transform: translateY(0) rotate(-1deg);
+      }
+      50% {
+        transform: translateY(-13px) rotate(1.5deg);
+      }
+    }
+
+    @keyframes openLid {
+      0% {
+        transform: translateX(-50%) rotate(0);
+      }
+      60% {
+        transform: translate(-72%, -52%) rotate(-28deg);
+      }
+      100% {
+        transform: translate(-78%, -62%) rotate(-36deg);
+      }
+    }
+
+    @keyframes openBase {
+      0%,
+      100% {
+        transform: translateX(-50%) scale(1);
+      }
+      45% {
+        transform: translateX(-50%) scale(1.08, 0.93);
+      }
+    }
+
+    @keyframes sparkleBlink {
+      0%,
+      100% {
+        opacity: 0.55;
+        transform: scale(0.9);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.25);
+      }
+    }
+
+    @keyframes heartRise {
+      from {
+        transform: translateY(0) translateX(0) rotate(0);
+        opacity: 0;
+      }
+      12%,
+      82% {
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-112vh) translateX(var(--drift)) rotate(28deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes particleTwinkle {
+      0%,
+      100% {
+        transform: translateY(0) scale(0.74);
+        opacity: 0.28;
+      }
+      50% {
+        transform: translateY(-18px) scale(1.22);
+        opacity: 0.95;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar {
+        align-items: flex-start;
+      }
+
+      .music-button {
+        width: 44px;
+        height: 44px;
+      }
+
+      .gift-stage {
+        min-height: auto;
+        grid-template-columns: repeat(2, minmax(128px, 1fr));
+        gap: 28px 12px;
+        padding-bottom: 96px;
+      }
+
+      .gift-button {
+        width: clamp(114px, 38vw, 148px);
+      }
+
+      .gift-button:nth-child(2n),
+      .gift-button:nth-child(3n) {
+        translate: 0 0;
+      }
+
+      .hero-photo-wrap {
+        border-radius: 26px;
+      }
+    }
+
+    @media (max-width: 410px) {
+      .surprise-page {
+        padding-inline: 10px;
+      }
+
+      .gift-stage {
+        grid-template-columns: repeat(2, minmax(112px, 1fr));
+      }
+
+      .gift-button {
+        width: clamp(104px, 41vw, 132px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="opening-screen" id="openingScreen" aria-label="Mother's Day welcome">
+    <div class="opening-content">
+      <div class="hero-photo-wrap">
+        <img class="hero-photo" id="openingPhoto" alt="A beautiful memory with Amma" />
+      </div>
+      <h1 class="opening-title">Happy Mother's Day Amma <span aria-hidden="true">❤️</span></h1>
+      <p class="opening-subtitle">Best Mother in the World <span aria-hidden="true">💖</span></p>
+    </div>
+  </section>
+
+  <main class="surprise-page" aria-label="Mother's Day surprise">
+    <div id="effectsLayer" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <h2 class="page-title">Open each gift for a little magic</h2>
+      <button class="music-button" id="musicButton" type="button" aria-label="Play or pause background music" title="Music">
+        <span id="musicIcon" aria-hidden="true">♪</span>
+      </button>
+    </header>
+
+    <section class="gift-stage" id="giftStage" aria-label="Gift boxes"></section>
+
+    <p class="final-message" id="finalMessage">Every gift says the same truth: I love you forever, Amma ❤️</p>
+  </main>
+
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalMessage">
+    <article class="modal-card">
+      <button class="modal-close" id="modalClose" type="button" aria-label="Close surprise">×</button>
+      <img class="modal-photo" id="modalPhoto" alt="A precious Mother's Day memory" />
+      <p class="modal-message" id="modalMessage"></p>
+    </article>
+  </div>
+
+  <script>
+    /*
+      PHOTO EDITING GUIDE
+      Replace these URLs with your own photo links or local file names.
+      Example local path after placing photos beside this file: "photos/amma-1.jpg"
+    */
+    const OPENING_PHOTO_URL = "https://img.sanishtech.com/u/70dfea0f36a3c5b9b6ce90862a217152.jpg?auto=format&fit=crop&w=900&q=85";
+
+    const gifts = [
+      {
+        photo: "https://img.sanishtech.com/u/39abed3b95fa8a9ad268374f414c2ae4.jpg?auto=format&fit=crop&w=900&q=85",
+        message: "Love You Amma ❤️",
+        colors: ["#ff4fa6", "#ffd36e", "#a888ff"]
+      },
+      {
+        photo: "https://img.sanishtech.com/u/56fa44850d520d9bdf3d3dfe535bd2fd.jpg?auto=format&fit=crop&w=900&q=85",
+        message: "Best Mom Ever 🌸",
+        colors: ["#74f7cf", "#ff8ccb", "#7f9cff"]
+      },
+      {
+        photo: "https://img.sanishtech.com/u/d0571b69ae46a2011806518e102fa18c.jpg?auto=format&fit=crop&w=900&q=85",
+        message: "My Forever 💖",
+        colors: ["#ff8b3d", "#ffec6e", "#ff4fa6"]
+      },
+      {
+        photo: "https://img.sanishtech.com/u/d814fcaa7f6fbf4be2578afdc82fb282.jpg?auto=format&fit=crop&w=900&q=85",
+        message: "Thank You For Everything 🌷",
+        colors: ["#a888ff", "#ff7ecb", "#8ff7d2"]
+      },
+      {
+        photo: "https://img.sanishtech.com/u/32b885f3245d612a31e7363af3a3290c.jpg?auto=format&fit=crop&w=900&q=85",
+        message: "Your Smile Is My Home ✨",
+        colors: ["#5ddcff", "#ff6baf", "#ffd36e"]
+      },
+      {
+        photo: "https://img.sanishtech.com/u/f3aeed43ba4b49b761a0716d74ad0b31.jpg?auto=format&fit=crop&w=900&q=85",
+        message: "My First Friend, My Mumma 💕",
+        colors: ["#ff5f8f", "#bb8cff", "#75f7c8"]
+      },
+      {
+        photo: "https://img.sanishtech.com/u/8a6ddfbf669c3d778787b10df3464e05.jpg?auto=format&fit=crop&w=900&q=85",
+        message: "You Make Life Beautiful 🌹",
+        colors: ["#ff3d96", "#ffcf6e", "#75d7ff"]
+      },
+      {
+        photo: "https://img.sanishtech.com/u/613e019f1f1b543c65c2ef151a99dfcc.jpg?auto=format&fit=crop&w=900&q=85",
+        message: "Forever Grateful For You 💝",
+        colors: ["#f85dd1", "#81f7e5", "#ffe06e"]
+      }
+    ];
+
+    /*
+      MESSAGE EDITING GUIDE
+      Change any message above, or edit this final surprise text.
+    */
+    const finalSurpriseText = "Every gift says the same truth: I love you forever, Amma ❤️";
+
+    /*
+      MUSIC EDITING GUIDE
+      Replace this URL with your own MP3. Browsers require the visitor to tap the music button before audio plays.
+    */
+    const MUSIC_URL = "https://www.image2url.com/r2/default/audio/1778262591151-ee898868-4c06-496c-891e-982e8bf005f9.mp3";
+
+    const openingScreen = document.querySelector("#openingScreen");
+    const openingPhoto = document.querySelector("#openingPhoto");
+    const giftStage = document.querySelector("#giftStage");
+    const modalBackdrop = document.querySelector("#modalBackdrop");
+    const modalPhoto = document.querySelector("#modalPhoto");
+    const modalMessage = document.querySelector("#modalMessage");
+    const modalClose = document.querySelector("#modalClose");
+    const effectsLayer = document.querySelector("#effectsLayer");
+    const finalMessage = document.querySelector("#finalMessage");
+    const musicButton = document.querySelector("#musicButton");
+    const musicIcon = document.querySelector("#musicIcon");
+
+    const openedGiftIndexes = new Set();
+    const audio = new Audio(MUSIC_URL);
+    audio.loop = true;
+    audio.volume = 0.35;
+
+    openingPhoto.src = OPENING_PHOTO_URL;
+    finalMessage.textContent = finalSurpriseText;
+
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        openingScreen.classList.add("is-hidden");
+      }, 4300);
+    });
+
+    function createGift(gift, index) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "gift-button";
+      button.setAttribute("aria-label", `Open gift ${index + 1}`);
+      button.style.setProperty("--box-a", gift.colors[0]);
+      button.style.setProperty("--box-b", gift.colors[1]);
+      button.style.setProperty("--box-c", gift.colors[2]);
+      button.style.setProperty("--delay", `${index * -0.36}s`);
+
+      button.innerHTML = `
+        <span class="gift-shine"></span>
+        <span class="gift-spark"></span>
+        <span class="gift-lid"></span>
+        <span class="gift-base"></span>
+      `;
+
+      button.addEventListener("click", () => openGift(button, gift, index));
+      return button;
+    }
+
+    function openGift(button, gift, index) {
+      if (!openedGiftIndexes.has(index)) {
+        openedGiftIndexes.add(index);
+      }
+
+      button.classList.add("is-opening");
+      setTimeout(() => {
+        button.classList.add("is-opened");
+        showModal(gift);
+        checkFinalSurprise();
+      }, 520);
+    }
+
+    function showModal(gift) {
+      modalPhoto.src = gift.photo;
+      modalMessage.textContent = gift.message;
+      modalBackdrop.classList.add("is-visible");
+      modalClose.focus();
+    }
+
+    function closeModal() {
+      modalBackdrop.classList.remove("is-visible");
+    }
+
+    function checkFinalSurprise() {
+      if (openedGiftIndexes.size === gifts.length) {
+        setTimeout(() => finalMessage.classList.add("is-visible"), 460);
+      }
+    }
+
+    function createFloatingEffects() {
+      const heartCount = 24;
+      const particleCount = 34;
+      const particleColors = ["#ffffff", "#ff5faf", "#ffd36e", "#a888ff", "#8ff7d2"];
+
+      for (let i = 0; i < heartCount; i += 1) {
+        const heart = document.createElement("span");
+        heart.className = "heart";
+        heart.textContent = i % 3 === 0 ? "♡" : "♥";
+        heart.style.setProperty("--left", `${Math.random() * 100}%`);
+        heart.style.setProperty("--size", `${18 + Math.random() * 28}px`);
+        heart.style.setProperty("--duration", `${9 + Math.random() * 11}s`);
+        heart.style.setProperty("--delay", `${Math.random() * -18}s`);
+        heart.style.setProperty("--drift", `${-45 + Math.random() * 90}px`);
+        effectsLayer.appendChild(heart);
+      }
+
+      for (let i = 0; i < particleCount; i += 1) {
+        const particle = document.createElement("span");
+        particle.className = "particle";
+        particle.style.setProperty("--left", `${Math.random() * 100}%`);
+        particle.style.setProperty("--top", `${Math.random() * 100}%`);
+        particle.style.setProperty("--size", `${4 + Math.random() * 8}px`);
+        particle.style.setProperty("--duration", `${2.4 + Math.random() * 3.5}s`);
+        particle.style.setProperty("--delay", `${Math.random() * -4}s`);
+        particle.style.setProperty("--color", particleColors[i % particleColors.length]);
+        effectsLayer.appendChild(particle);
+      }
+    }
+
+    gifts.forEach((gift, index) => {
+      giftStage.appendChild(createGift(gift, index));
+    });
+
+    createFloatingEffects();
+
+    modalClose.addEventListener("click", closeModal);
+
+    modalBackdrop.addEventListener("click", (event) => {
+      if (event.target === modalBackdrop) {
+        closeModal();
+      }
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeModal();
+      }
+    });
+
+    musicButton.addEventListener("click", async () => {
+      try {
+        if (audio.paused) {
+          await audio.play();
+          musicIcon.textContent = "Ⅱ";
+          musicButton.setAttribute("aria-label", "Pause background music");
+        } else {
+          audio.pause();
+          musicIcon.textContent = "♪";
+          musicButton.setAttribute("aria-label", "Play background music");
+        }
+      } catch (error) {
+        musicIcon.textContent = "♪";
+      }
+    });
+  </script>
+</body>
+</html>
